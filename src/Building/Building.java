@@ -80,9 +80,6 @@ public class Building {
         toSet.putElevator(elevator);
         clear.removeElevator(elevator);
     }
-    public Elevator getElevator(int numberOrArray) {
-        return listOfElevators.get(numberOrArray);
-    }
     @Override
     public String toString() {
         StringBuilder build = new StringBuilder();
