@@ -54,11 +54,9 @@ public class Floor implements SubjectFloor, ObserverButton{
     public void putElevator(final Elevator elevator) {
         current.add(0, elevator);
         elevator.setCurrentFloor(this);
-        notifyObserver();
     }
     public void removeElevator(Elevator elevator) {
         current.remove(elevator);
-        notifyObserver();
     }
     public ButtonPanel getButtonPanel() {
         return buttonPanel;
