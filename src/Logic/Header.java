@@ -39,7 +39,7 @@ public class Header implements ObserverElevator, ObserverFloor {
     @Override
     public void update(Elevator elevator) {
         System.out.println("Update in Header is work");
-        Visual.visualBuilding(building);
+        Visual.visual(building);
     }
 
     @Override

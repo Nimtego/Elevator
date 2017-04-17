@@ -1,5 +1,7 @@
 package Building;
 
+import View.Visual;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,9 +19,9 @@ public class Building {
     public Building(int countElevators, int countFloor) {
         this.listOfElevators = new ArrayList<>();
         this.countFloor = countFloor;
-        generateListOfElevators(countElevators);
         arrayOfFloor = new Floor[countFloor];
         generateArrayOfFloor(countFloor);
+        generateListOfElevators(countElevators);
     }
 
     public Building(List<Elevator> listOfElevators, int countFloor) {
@@ -53,7 +55,7 @@ public class Building {
 
     private void generateListOfElevators(final int countElevators) {
         for (int i = 0; i < countElevators; i++ ) {
-            listOfElevators.add(new Elevator("Elevator ", countFloor, i));
+            listOfElevators.add(ElevatorsFabric.simple(countFloor, arrayOfFloor[0]));
         }
     }
     private void generateArrayOfFloor(final int countFloor) {
@@ -80,15 +82,13 @@ public class Building {
         toSet.putElevator(elevator);
         clear.removeElevator(elevator);
     }
-    public Elevator getElevator(int numberOrArray) {
-        return listOfElevators.get(numberOrArray);
-    }
     @Override
     public String toString() {
+        Visual.visual(this);
         StringBuilder build = new StringBuilder();
         build.append("Building count floor ");
         build.append(countFloor);
-        build.append("\n\n");
+        build.append("\n");
         build.append("Count of elevators: ");
         build.append(listOfElevators.size());
         build.append("\n");

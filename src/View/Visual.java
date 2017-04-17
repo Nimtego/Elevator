@@ -1,28 +1,54 @@
 package View;
 import Building.*;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Random;
-
 /**
  * Created by myasnikov on 20.02.2017.
  */
 public class Visual {
-    public static Building localBuilding;
+/*    public static Building localBuilding;
     public static int currentFloor;
     public static int arrayOfFloor;
     public static int countOfElevators;
     public static String markerElevator = " ";
-    public static String choice = "";
+    public static String choice = ""; */
 
-    public static void visualBuilding(final Building building) { // TODO: 01.03.2017 переделать
-            int arrayOfFloor = building.getCountFloor();
-            int countOfElevators = building.getListOfElevators().size();
-            String markerEmptyFloor = Constant.MARKER_EMPTY_FLOOR;
-            String markerElevator = Constant.SYMBOL_OF_LIFT;
-            String floorMarker = markerEmptyFloor;
+    public static void visual(final Building building) {  // TODO: 17.04.2017 опять херобора
+        int arrayOfFloor = building.getCountFloor();
+        int countOfElevators = building.getListOfElevators().size();
+        String markerElevator = Constant.MARKER_ELEVATOR;
+        System.out.println(arrayOfFloor + " " + countOfElevators);
+        for (int i = 0; i < arrayOfFloor; i++) {
+            System.out.print("(" + (arrayOfFloor - i) + ") ");
+            if (building.getArrayOfFloor()[arrayOfFloor - i - 1].getCurrent().isEmpty()) {
+                for (int k = 0; k < countOfElevators; k++) {
+                    System.out.print("[=]");
+                }
+                System.out.println();
+                continue;
+            }
+            for (int j = 0; j < countOfElevators; j++) {
+                for (Elevator el : building.getFloor(i).getCurrent()) {
+                    System.out.println(el.getCurrentFloor().getNumberFloor());
+                    System.out.println(el.getSerialNumber());
+                }
+                if (!building.getFloor(i).checkSerialNumber(j)) {
+                    System.out.print("[" +markerElevator +"]");
+                    continue;
+                }
+                System.out.print("[+]");
+            }
+            System.out.println();
+        }
+    }
+
+    /*public static void visualBuilding(final Building building) { // TODO: 01.03.2017 рабочая но херобора
+        System.out.println(building.getArrayOfFloor().toString());
+            localBuilding = building;
+            currentFloor = randomChoice(building.getCountFloor());
+            arrayOfFloor = building.getCountFloor();
+            countOfElevators = building.getListOfElevators().size();
+            String markerElevator = " ";
+            String choice = "";
             System.out.println(arrayOfFloor + " " + countOfElevators);
             for (int i = 0; i < arrayOfFloor; i++) {
                 System.out.print("(" + (arrayOfFloor - i) + ") ");
@@ -30,12 +56,15 @@ public class Visual {
                     if (!building.getArrayOfFloor()[arrayOfFloor - i - 1].getCurrent().isEmpty()) {
                         for (Elevator elevator : building.getArrayOfFloor()[arrayOfFloor - i - 1].getCurrent()) {
                             if (elevator.getSerialNumber() == j) {
-                                floorMarker = markerElevator;
+                                markerElevator = "#";
                             }
                         }
                     }
-                    System.out.print("[" + floorMarker + "]");
-                    floorMarker = markerEmptyFloor;
+                    System.out.print("[" + markerElevator + "]");
+                    markerElevator = " ";
+                }
+                if (arrayOfFloor == currentFloor) {
+                    System.out.print("[*]");
                 }
                 System.out.println();
             }
@@ -96,7 +125,7 @@ public class Visual {
             }
             System.out.println();
         }
-    }
+    }*/
     public static void visualQuest(final Building building){
 
     }

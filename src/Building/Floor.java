@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by myasnikov on 16.02.2017.
  */
-public class Floor implements SubjectFloor, ObserverButton{
+public class Floor implements SubjectFloor, ObserverButton {
 
     private String information = "Floor";
     private int maxValueFloor;
@@ -53,12 +53,19 @@ public class Floor implements SubjectFloor, ObserverButton{
     }
     public void putElevator(final Elevator elevator) {
         current.add(0, elevator);
-        elevator.setCurrentFloor(this);
-        notifyObserver();
+    }
+    public boolean checkSerialNumber(final int serialNumber) {
+        if (!current.isEmpty()) {
+            for (Elevator elevator : current) {
+                if (elevator.getSerialNumber() == serialNumber) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
     public void removeElevator(Elevator elevator) {
         current.remove(elevator);
-        notifyObserver();
     }
     public ButtonPanel getButtonPanel() {
         return buttonPanel;

@@ -24,24 +24,80 @@ public class Elevator implements SubjectElevator, Comparable<Elevator>{
     private List<ObserverElevator> observerElevators;
     private List<Passenger> passengers;
 
-    public Elevator(final String name, final int countFloor, final int serialNumber) {
-        this(name, countFloor, serialNumber, new Floor(0, countFloor));
+    public static Builder builder() {
+        return new Elevator().new Builder();
     }
-    public Elevator(final String name, final int countFloor, final int serialNumber, final Floor currentFloor) {
-        this.name = name;
-        this.countFloor = countFloor;
-        this.serialNumber = serialNumber;
-        currentFloor.putElevator(this);
-        this.state = new State();
-        this.weightLoading = 0;
-        this.maxWeight = Constant.MAX_WEIGHT;
-        this.buttonPanel = ButtonPanelFabric.elevatorButtonPanelEasy(this);
-        this.observerElevators = new ArrayList<>();
-        this.passengers = new ArrayList<>();
+
+    private Elevator(){}
+
+    public class Builder {
+        private Builder() {}
+
+
+        public Builder name(final String name) {
+            Elevator.this.name = name;
+            return this;
+        }
+
+        public Builder countFloor(final int countFloor) {
+            Elevator.this.countFloor = countFloor;
+            return this;
+        }
+
+        public Builder currentFloor(final Floor currentFloor) {
+            Elevator.this.currentFloor = currentFloor;
+            return this;
+        }
+        public Builder state(final State state) {
+            Elevator.this.state = state;
+            return this;
+        }
+        public Builder serialNumber(final int serialNumber) {
+            Elevator.this.serialNumber = serialNumber;
+            return this;
+        }
+        public Builder weightLoading(final int weightLoading) {
+            Elevator.this.weightLoading = weightLoading;
+            return this;
+        }
+        public Builder maxWeight(final int maxWeight) {
+            Elevator.this.maxWeight = maxWeight;
+            return this;
+        }
+/*        public Builder buttonPanel(final ButtonPanel buttonPanel) {
+            Elevator.this.buttonPanel = buttonPanel;
+            return this;
+        }
+
+        public Builder observerElevators(final List<ObserverElevator> observerElevators) {
+            Elevator.this.observerElevators = observerElevators;
+            return this;
+        }
+        public Builder passengers(final List<Passenger> passengers) {
+            Elevator.this.passengers = passengers;
+            return this;
+        }*/
+        public Elevator build() {
+            Elevator elevator = new Elevator();
+            elevator.name = Elevator.this.name;
+            elevator.countFloor = Elevator.this.countFloor;
+            elevator.currentFloor = Elevator.this.currentFloor;
+            elevator.state = Elevator.this.state;
+            elevator.serialNumber = Elevator.this.serialNumber;
+            elevator.weightLoading = Elevator.this.weightLoading;
+            elevator.maxWeight = Elevator.this.maxWeight;
+            elevator.buttonPanel = Elevator.this.buttonPanel;
+            elevator.observerElevators = Elevator.this.observerElevators;
+            elevator.passengers = Elevator.this.passengers;
+
+            return elevator;
+        }
     }
 
     public void changeFloor(final Floor currentFloor) {
+        this.currentFloor.removeElevator(this);
         this.currentFloor = currentFloor;
+        this.currentFloor.putElevator(this);
         notifyObserver();
     }
     public boolean checkAllowableWeight() {
@@ -66,9 +122,7 @@ public class Elevator implements SubjectElevator, Comparable<Elevator>{
     }
     @Override
     public String toString() {
-        return name +serialNumber +" moves with 0 on " +countFloor /*+"\nCurrent floor "
-                +(currentFloor == null ? "NOT SET ELEVATOR" : currentFloor.getCurrent()) +" | Loading weight: "
-                +weightLoading*/+"\n" +currentFloor;
+        return name +serialNumber +" moves with 0 on " +countFloor +"\n" +currentFloor;
     }
 
  /*   public boolean fellowTraveller(final Floor floor) {
@@ -152,6 +206,9 @@ public class Elevator implements SubjectElevator, Comparable<Elevator>{
         this.maxWeight = maxWeight;
     }
 
+    public void setObserverElevator(final List<ObserverElevator> observerElevators) {
+        this.observerElevators = observerElevators;
+    }
     @Override
     public int compareTo(@NotNull Elevator other) {
         if(this.currentFloor.getNumberFloor() > other.currentFloor.getNumberFloor())
@@ -161,3 +218,21 @@ public class Elevator implements SubjectElevator, Comparable<Elevator>{
         return 0;
     }
 }
+
+
+/**    public Elevator(final String name, final int countFloor, final int serialNumber) {
+ this(name, countFloor, serialNumber, new Floor(0, countFloor));
+ }
+ public Elevator(final String name, final int countFloor, final int serialNumber, final Floor currentFloor) {
+ this.name = name;
+ this.countFloor = countFloor;
+ this.serialNumber = serialNumber;
+ this.currentFloor = currentFloor;
+ this.currentFloor.putElevator(this);
+ this.state = new State();
+ this.weightLoading = 0;
+ this.maxWeight = Constant.MAX_WEIGHT;
+ this.buttonPanel = ButtonPanelFabric.elevatorButtonPanelEasy(this);
+ this.observerElevators = new ArrayList<>();
+ this.passengers = new ArrayList<>();
+ }*/

@@ -6,6 +6,5 @@ package Building;
 public class Constant {
     public static final int MAX_WEIGHT = 1000;
     public static final int AVERAGE_WEIGHT = 50;
-    public static final String SYMBOL_OF_LIFT = "#";
-    public static final String MARKER_EMPTY_FLOOR = " ";
+    public static final String MARKER_ELEVATOR = "#";
 }

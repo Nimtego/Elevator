@@ -3,6 +3,8 @@ package Logic;
 import Building.Elevator;
 import Building.Floor;
 
+import java.util.Map;
+
 /**
  * Created by myasnikov on 22.02.2017.
  */
