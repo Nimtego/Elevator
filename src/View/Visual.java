@@ -5,13 +5,6 @@ import Building.*;
  * Created by myasnikov on 20.02.2017.
  */
 public class Visual {
-/*    public static Building localBuilding;
-    public static int currentFloor;
-    public static int arrayOfFloor;
-    public static int countOfElevators;
-    public static String markerElevator = " ";
-    public static String choice = ""; */
-
     public static void visual(final Building building) {  // TODO: 17.04.2017 опять херобора
         int arrayOfFloor = building.getCountFloor();
         int countOfElevators = building.getListOfElevators().size();
@@ -21,7 +14,7 @@ public class Visual {
             System.out.print("(" + (arrayOfFloor - i) + ") ");
             if (building.getArrayOfFloor()[arrayOfFloor - i - 1].getCurrent().isEmpty()) {
                 for (int k = 0; k < countOfElevators; k++) {
-                    System.out.print("[=]");
+                    System.out.print("[ ]");
                 }
                 System.out.println();
                 continue;
@@ -35,7 +28,7 @@ public class Visual {
                     System.out.print("[" +markerElevator +"]");
                     continue;
                 }
-                System.out.print("[+]");
+                System.out.print("[ ]");
             }
             System.out.println();
         }
@@ -126,8 +119,4 @@ public class Visual {
             System.out.println();
         }
     }*/
-    public static void visualQuest(final Building building){
-
-    }
-
 }
