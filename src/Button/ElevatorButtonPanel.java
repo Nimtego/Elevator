@@ -32,7 +32,7 @@ public class ElevatorButtonPanel extends ButtonPanel {
     }
 
     @Override
-    public void taskComplite(Button button) {
+    public void taskComplete(Button button) {
 
     }
 /*

@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class ButtonPanelFabric {
     public static ButtonPanel elevatorButtonPanelEasy(final Elevator elevator) {
-        List<Button> button = new ArrayList<Button>();
+        List<Button> button = new ArrayList<>();
         for (int i = 0; i < elevator.getCountFloor(); i++) {
             button.add(new MovementButton(i));
         }

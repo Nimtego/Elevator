@@ -2,7 +2,6 @@ package Logic;
 
 import Building.*;
 import Button.*;
-import Exception.ElevatorException;
 import Passenger.Passenger;
 import View.Visual;
 
@@ -52,7 +51,7 @@ public class Header implements ObserverElevator, ObserverFloor {
         Thread threadElevator = new Thread(moveElevator);
         threadElevator.start();
   //      MoveElevator.moveElevator(elevator, floor);
-        floor.getButtonPanel().taskComplite(button);
+        floor.getButtonPanel().taskComplete(button);
 
     }
 
