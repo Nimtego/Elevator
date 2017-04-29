@@ -2,6 +2,7 @@ package Passenger;
 
 import Building.Elevator;
 import Building.Floor;
+import Exception.ElevatorException;
 
 /**
  * Created by myasnikov on 21.02.2017.
@@ -23,6 +24,10 @@ public class Passenger {
         if (aim == null)
             aim = new Aim(this);
         this.aim = aim;
+    }
+
+    public void push() {
+        aim.pushTheButton();
     }
 
     public String getName() {
@@ -61,7 +66,28 @@ public class Passenger {
         return aim;
     }
 
+    public void elevatorInFloor(Elevator elevator) {
+        try {
+            elevator.putPassenger(this);
+        } catch (ElevatorException e) {
+            System.out.println("OVERLOAD");
+        }
+        countElevator = elevator;
+        countFloor.removePassenger(this);
+    }
+
     public void setAim(Aim aim) {
         this.aim = aim;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("Name passenger ");
+        stringBuilder.append(name);
+        stringBuilder.append(" Floor ");
+        stringBuilder.append(countFloor);
+        stringBuilder.append(aim);
+        return String.valueOf(stringBuilder);
     }
 }

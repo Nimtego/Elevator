@@ -3,6 +3,7 @@ package Logic;
 import Building.*;
 import Button.*;
 import Exception.ElevatorException;
+import Passenger.Passenger;
 import View.Visual;
 
 import java.util.*;
@@ -12,21 +13,11 @@ import java.util.*;
  */
 public class Header implements ObserverElevator, ObserverFloor {
     private Building building;
-    private Map<Floor, Elevator> turnOfTasks;
-
+    private MoveElevator moveElevator = new MoveElevator(null, null);
     public Header(final Building building) {
         this.building = building;
-        this.turnOfTasks = new HashMap<>();
         setObserversSubjectElevators();
         setObserversSubjectFloor();
-    }
-
-    public Map<Floor, Elevator> getTurnOfTasks() {
-        return turnOfTasks;
-    }
-
-    public void setTurnOfTasks(Map<Floor, Elevator> turnOfTasks) {
-        this.turnOfTasks = turnOfTasks;
     }
 
     public Building getBuilding() {
@@ -39,15 +30,37 @@ public class Header implements ObserverElevator, ObserverFloor {
     @Override
     public void update(Elevator elevator) {
         System.out.println("Update in Header is work");
+        if (elevator.getState().isLoading()) {
+            System.out.println("BLOC REMOVE IN HEADER " +elevator.getSerialNumber() +" in " +elevator.getCurrentFloor().getNumberFloor());
+ /*           for (Passenger passenger : elevator.getCurrentFloor().getPassengers()) {
+                passenger.elevatorInFloor();
+            }*/
+            List<Passenger> passengers = elevator.getCurrentFloor().getPassengers();
+            for (int i = 0; i < passengers.size(); i++) {   //foreach выбрасывает ConcurrentModificationException
+                passengers.get(i).elevatorInFloor(elevator);
+            }
+        }
         Visual.visual(building);
     }
 
     @Override
     public void update(Floor floor, Button button) {
-        Elevator elevator = takeFreeElevator(floor);
-        MoveElevator.setNewPositionOnBuilding(elevator, floor);
+        Elevator elevator = ElevatorGetter.takeFreeElevator(building.getListOfElevators(), button);
+    //    Elevator elevator = takeFreeElevator(floor);
+        moveElevator.setFloor(floor);
+        moveElevator.setElevator(elevator);
+        Thread threadElevator = new Thread(moveElevator);
+        threadElevator.start();
+  //      MoveElevator.moveElevator(elevator, floor);
+        floor.getButtonPanel().taskComplite(button);
 
     }
+
+    @Override
+    public void update() {
+        Visual.visual(building);
+    }
+
     private void setObserversSubjectElevators() {
         for (Elevator elevator : building.getListOfElevators()) {
             elevator.registerObserver(this);
@@ -64,6 +77,9 @@ public class Header implements ObserverElevator, ObserverFloor {
         for (Elevator elevator : allElevator) {
             if (elevator.getCountFloor() == floor.getNumberFloor() && elevator.getState().isFree()
                     && elevator.checkAllowableWeight()) { // TODO: 22.02.2017
+                if (elevator == null) {
+                    elevator = building.getListOfElevators().get(0);
+                }
                 return elevator;
             }
             if (fellowTraveller(floor, elevator) && elevator.checkAllowableWeight()) {
@@ -74,10 +90,14 @@ public class Header implements ObserverElevator, ObserverFloor {
                 sortElevator.add(elevator);
             }
         }
+        Elevator elevator = sortByFloor(sortElevator).get(0);
+        if (elevator == null) {   // TODO: 26.04.2017 костыль который не пашет
+            return building.getListOfElevators().get(0);
+        }
         return sortByFloor(sortElevator).get(0);
     }
     private boolean fellowTraveller(final Floor floor, final Elevator elevator)  {
-        Button[] button = floor.getButtonPanel().getButtons();
+        List<Button> button = floor.getButtonPanel().getButtons();
         for (Button butt : button) {
             if (butt.getButtonState() instanceof ButtonStateCall) {
                 return (((ButtonStateCall) butt.getButtonState()).getUpOrDawn() && elevator.getState().isMovementUp()
@@ -90,5 +110,4 @@ public class Header implements ObserverElevator, ObserverFloor {
         Collections.sort(elevators);
         return elevators;
     }
-
 }

@@ -3,6 +3,8 @@ package Button;
 
 import Building.Elevator;
 
+import java.util.List;
+
 /**
  * Created by myasnikov on 17.02.2017.
  */
@@ -10,7 +12,7 @@ public class ElevatorButtonPanel extends ButtonPanel {
 
     public Elevator owner;
 
-    public ElevatorButtonPanel(Button[] buttons, final Elevator owner) {
+    public ElevatorButtonPanel(List<Button> buttons, final Elevator owner) {
         super("Elevator Button Panel " +owner.getName(), buttons);
         this.owner = owner;
     }
@@ -26,6 +28,11 @@ public class ElevatorButtonPanel extends ButtonPanel {
 
     @Override
     public void notificationOfPressing(Button button) {
+
+    }
+
+    @Override
+    public void taskComplite(Button button) {
 
     }
 /*

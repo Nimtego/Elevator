@@ -10,10 +10,10 @@ import java.util.List;
  */
 public abstract class ButtonPanel implements ObserverButton{
     private String name;
-    private Button[] buttons;
+    private List<Button> buttons;
     protected List<ObserverButton> observerButton;
 
-    ButtonPanel(String name, Button[] buttons) {
+    ButtonPanel(String name, List<Button> buttons) {
         this.name = name;
         this.buttons = buttons;
         this.observerButton = new ArrayList<>();
@@ -27,11 +27,11 @@ public abstract class ButtonPanel implements ObserverButton{
         this.name = name;
     }
 
-    public Button[] getButtons() {
+    public List<Button> getButtons() {
         return buttons;
     }
 
-    public void setButtons(Button[] buttons) {
+    public void setButtons(List<Button> buttons) {
         this.buttons = buttons;
     }
 
@@ -47,11 +47,13 @@ public abstract class ButtonPanel implements ObserverButton{
         return null;
     }
     public void pushButton(final int number) {
-        buttons[number].push();
+        buttons.get(number).push();
     }
 
     public void setObserverButton(List<ObserverButton> observerButton) {
         this.observerButton = observerButton;
     }
     public abstract void notificationOfPressing(Button button);
+    public abstract void taskComplite(final Button button);
+
 }

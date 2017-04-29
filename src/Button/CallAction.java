@@ -11,6 +11,8 @@ public class CallAction implements Action {
     private boolean upOrDawn;
     private boolean isPush;
 
+    public CallAction(){}
+
     public CallAction(boolean upOrDawn) {
         this.upOrDawn = upOrDawn;
         this.isPush = false;

@@ -10,16 +10,16 @@ import java.util.List;
  */
 public class Building {
     private List<Elevator> listOfElevators;
-    private Floor[] arrayOfFloor;
+    private List<Floor> listOfFloor;
     private int countFloor;
 
     public Building(final int countFloor) {
-        this.countFloor = countFloor;
+        this(countFloor, 1);
     }
-    public Building(int countElevators, int countFloor) {
+    public Building(final int countFloor, final int countElevators) {
         this.listOfElevators = new ArrayList<>();
         this.countFloor = countFloor;
-        arrayOfFloor = new Floor[countFloor];
+        this.listOfFloor = new ArrayList<>();
         generateArrayOfFloor(countFloor);
         generateListOfElevators(countElevators);
     }
@@ -45,46 +45,54 @@ public class Building {
         this.countFloor = countFloor;
     }
 
-    public Floor[] getArrayOfFloor() {
-        return arrayOfFloor;
+    public List<Floor> getArrayOfFloor() {
+        return listOfFloor;
     }
 
-    public void setArrayOfFloor(Floor[] arrayOfFloor) {
-        this.arrayOfFloor = arrayOfFloor;
+    public void setArrayOfFloor(List<Floor> listOfFloor) {
+        this.listOfFloor = listOfFloor;
     }
 
     private void generateListOfElevators(final int countElevators) {
         for (int i = 0; i < countElevators; i++ ) {
-            listOfElevators.add(ElevatorsFabric.simple(countFloor, arrayOfFloor[0]));
+            listOfElevators.add(ElevatorsFabric.simple(countFloor, listOfFloor.get(0)));
         }
     }
     private void generateArrayOfFloor(final int countFloor) {
         for (int i = 0; i < countFloor; i++ ) {
-            arrayOfFloor[i] = new Floor(i + 1, countFloor);
+            listOfFloor.add(new Floor(i + 1, countFloor));
         }
-        initialSituationElevators(0);
-    }
-    private void initialSituationElevators(final int situation) {
-        for (Elevator e : listOfElevators) {
-            arrayOfFloor[situation].putElevator(e);
+        for (int i = 0; i < countFloor; i++ ) {
+            Floor floor = listOfFloor.get(i);
+            if (i == 0) {
+                floor.setPrevious(null);
+                floor.setNext(listOfFloor.get(i + 1));
+                continue;
+            }
+            if (i == countFloor - 1) {
+                floor.setPrevious(listOfFloor.get(i - 1));
+                floor.setNext(null);
+                continue;
+            }
+            floor.setPrevious(listOfFloor.get(i - 1));
+            floor.setNext(listOfFloor.get(i + 1));
         }
     }
     public Floor getFloor(final int numberFloor) {
-        if (numberFloor < 0 || numberFloor > arrayOfFloor.length - 1)
+        if (numberFloor < 0 || numberFloor > listOfFloor.size() - 1)
             throw new ArrayIndexOutOfBoundsException();
-        return arrayOfFloor[numberFloor];
+        return listOfFloor.get(numberFloor);
     }
     public void setAndRemoveElevator(Floor toSet, Elevator elevator) throws Exception {
-        if (toSet.getElevator(elevator)) {
+/*        if (toSet.getElevator(elevator)) {
             throw new Exception();
-        }
+        }*/
         Floor clear = elevator.getCurrentFloor();
         toSet.putElevator(elevator);
         clear.removeElevator(elevator);
     }
     @Override
     public String toString() {
-        Visual.visual(this);
         StringBuilder build = new StringBuilder();
         build.append("Building count floor ");
         build.append(countFloor);
@@ -98,4 +106,5 @@ public class Building {
         }
         return build.toString();
     }
+
 }

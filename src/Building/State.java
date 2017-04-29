@@ -53,4 +53,7 @@ public class State {
     public boolean isFree() {
         return !borrow && !loading && !(movementDawn || movementUp);
     }
+    public void loadingProcess() {
+        loading = true;
+    }
 }

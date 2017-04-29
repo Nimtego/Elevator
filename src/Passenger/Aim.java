@@ -1,7 +1,5 @@
 package Passenger;
 
-import Building.Floor;
-
 import java.util.Random;
 
 /**
@@ -29,6 +27,19 @@ public class Aim {
         this.owner = owner;
     }
 
+    public void pushTheButton() {
+        int numberOfButton;
+        int countFloor = owner.getCountFloor().getNumberFloor();
+        if (countFloor < targetFloor) {
+            numberOfButton = countFloor > 0 ? 1 : 0;
+            owner.getCountFloor().getButtonPanel().pushButton(numberOfButton);
+        }
+        if (countFloor > targetFloor) {
+            numberOfButton = countFloor < owner.getCountFloor().getMaxValueFloor() ? 1 : 0;
+            owner.getCountFloor().getButtonPanel().pushButton(numberOfButton);
+        }
+
+    }
     public int getFloor() {
         return targetFloor;
     }
@@ -43,5 +54,13 @@ public class Aim {
 
     public void setOwner(Passenger owner) {
         this.owner = owner;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("Target floor ");
+        stringBuilder.append(targetFloor);
+        return String.valueOf(stringBuilder);
     }
 }

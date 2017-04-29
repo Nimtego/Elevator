@@ -11,6 +11,8 @@ import java.util.List;
 public class Floor implements SubjectFloor, ObserverButton {
 
     private String information = "Floor";
+    private Floor next;
+    private Floor previous;
     private int maxValueFloor;
     private int numberFloor;
     private List<Elevator> current;
@@ -96,9 +98,26 @@ public class Floor implements SubjectFloor, ObserverButton {
     }
     public void putPassenger(final Passenger passenger) {
         this.passengers.add(passenger);
+        notifyObserverForVisual();
     }
     public void removePassenger(final Passenger passenger) {
         this.passengers.remove(passenger);
+    }
+    public Floor getNext() {
+        return next;
+    }
+    public void setNext(Floor next) {
+        this.next = next;
+    }
+    public Floor getPrevious() {
+        return previous;
+    }
+    public void removeAllPassengers() {
+        passengers = new ArrayList<>();
+    }
+
+    public void setPrevious(Floor previous) {
+        this.previous = previous;
     }
     @Override
     public String toString() {
@@ -127,14 +146,20 @@ public class Floor implements SubjectFloor, ObserverButton {
 
     @Override
     public void notifyObserver() {
+        for (ObserverFloor observer : observerFloors) {
+            observer.update(this, buttonPanel.getIsActive());
+        }
+    }
 
+    @Override
+    public void notifyObserverForVisual() {
+        for (ObserverFloor observer : observerFloors) {
+            observer.update();
+        }
     }
 
     @Override
     public void update(Button button) {
-        for (ObserverFloor observer : observerFloors) {
-            System.out.println("Update observer in Floor work");
-            observer.update(this, button);
-        }
+        notifyObserver();
     }
 }

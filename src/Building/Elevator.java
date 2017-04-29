@@ -2,6 +2,7 @@ package Building;
 
 import Button.ButtonPanel;
 import Button.ButtonPanelFabric;
+import Exception.ElevatorException;
 import Passenger.Passenger;
 import org.jetbrains.annotations.NotNull;
 
@@ -24,7 +25,7 @@ public class Elevator implements SubjectElevator, Comparable<Elevator>{
     private List<ObserverElevator> observerElevators;
     private List<Passenger> passengers;
 
-    public static Builder builder() {
+    static Builder builder() {
         return new Elevator().new Builder();
     }
 
@@ -64,19 +65,18 @@ public class Elevator implements SubjectElevator, Comparable<Elevator>{
             Elevator.this.maxWeight = maxWeight;
             return this;
         }
-/*        public Builder buttonPanel(final ButtonPanel buttonPanel) {
-            Elevator.this.buttonPanel = buttonPanel;
-            return this;
-        }
-
-        public Builder observerElevators(final List<ObserverElevator> observerElevators) {
-            Elevator.this.observerElevators = observerElevators;
-            return this;
-        }
-        public Builder passengers(final List<Passenger> passengers) {
-            Elevator.this.passengers = passengers;
-            return this;
-        }*/
+        /*        public Builder buttonPanel(final ButtonPanel buttonPanel) {
+                    Elevator.this.buttonPanel = buttonPanel;
+                    return this;
+                }
+                public Builder observerElevators(final List<ObserverElevator> observerElevators) {
+                    Elevator.this.observerElevators = observerElevators;
+                    return this;
+                }
+                public Builder passengers(final List<Passenger> passengers) {
+                    Elevator.this.passengers = passengers;
+                    return this;
+                }*/
         public Elevator build() {
             Elevator elevator = new Elevator();
             elevator.name = Elevator.this.name;
@@ -125,9 +125,9 @@ public class Elevator implements SubjectElevator, Comparable<Elevator>{
         return name +serialNumber +" moves with 0 on " +countFloor +"\n" +currentFloor;
     }
 
- /*   public boolean fellowTraveller(final Floor floor) {
-        floor.getButtonPanel().
-    }*/
+    /*   public boolean fellowTraveller(final Floor floor) {
+           floor.getButtonPanel().
+       }*/
     public String getName() {
         return name;
     }
@@ -158,8 +158,12 @@ public class Elevator implements SubjectElevator, Comparable<Elevator>{
         this.serialNumber = serialNumber;
     }
 
-    public void putPassenger(final Passenger passenger) {
+    public void putPassenger(final Passenger passenger) throws ElevatorException {
+        if (passenger.getWeight() + weightLoading > maxWeight) {
+            throw new ElevatorException();
+        }
         this.passengers.add(passenger);
+        this.weightLoading += passenger.getWeight();
     }
 
     public void removePassenger(final Passenger passenger) {
@@ -209,6 +213,12 @@ public class Elevator implements SubjectElevator, Comparable<Elevator>{
     public void setObserverElevator(final List<ObserverElevator> observerElevators) {
         this.observerElevators = observerElevators;
     }
+
+    public void openDoor() {
+        state.loadingProcess();
+        notifyObserver();
+    }
+
     @Override
     public int compareTo(@NotNull Elevator other) {
         if(this.currentFloor.getNumberFloor() > other.currentFloor.getNumberFloor())
