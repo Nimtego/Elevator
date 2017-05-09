@@ -1,5 +1,7 @@
 package Button;
 
+import Building.Floor;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,6 +54,6 @@ public abstract class ButtonPanel implements ObserverButton{
         this.observerButton = observerButton;
     }
     public abstract void notificationOfPressing(Button button);
-    public abstract void taskComplete(final Button button);
+    public abstract void taskComplite(final Button button);
 
 }

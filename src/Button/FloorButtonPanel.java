@@ -26,7 +26,7 @@ public class FloorButtonPanel extends ButtonPanel {
     }
 
     @Override
-    public void taskComplete(Button button) {
+    public void taskComplite(Button button) {
 
     }
     public Floor getOwner() {

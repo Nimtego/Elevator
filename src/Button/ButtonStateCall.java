@@ -10,9 +10,11 @@ public class ButtonStateCall extends ButtonState {
         super(false);
         this.upOrDawn = upOrDawn;
     }
+
     public boolean getUpOrDawn() {
         return upOrDawn;
     }
+
     public void setUpOrDawn(boolean upOrDawn) {
         this.upOrDawn = upOrDawn;
     }

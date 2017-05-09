@@ -1,5 +1,7 @@
 package Passenger;
 
+import Building.Floor;
+
 import java.util.Random;
 
 /**

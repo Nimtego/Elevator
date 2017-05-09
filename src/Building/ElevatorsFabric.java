@@ -15,7 +15,7 @@ public class ElevatorsFabric {
     public static Elevator simple(final int countFloor, final Floor currentFloor) {
 
         Elevator elevator = Elevator.builder().name("Elevator \"simple\" ").countFloor(countFloor)
-                .maxWeight(MAX_WEIGHT_SIMPLE).weightLoading(0).currentFloor(currentFloor).state(new State())
+                .maxWeight(1000000/*MAX_WEIGHT_SIMPLE*/).weightLoading(0).currentFloor(currentFloor).state(new State())
                 .serialNumber(serialNumber++).build();
         currentFloor.putElevator(elevator);
         elevator.setButtonPanel(ButtonPanelFabric.elevatorButtonPanelEasy(elevator));
